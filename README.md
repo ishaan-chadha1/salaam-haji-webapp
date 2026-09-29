@@ -26,6 +26,13 @@ server-side orders are off, and everything else works and saves in the browser.
 
 ## Deploy
 
+**Vercel (set up):** import this repo at vercel.com/new, add the two
+`VITE_SUPABASE_*` environment variables, and deploy. `vercel.json` handles
+the build, page routing and service-worker caching. Every push to `main`
+deploys automatically.
+
+**Anywhere else:**
+
 `npm run build` produces a static site in `dist/`. Host it anywhere that serves
 static files with an SPA fallback to `index.html` (Firebase Hosting, Netlify,
 Vercel, Cloudflare Pages, S3 + CloudFront). It must be served over **HTTPS**
