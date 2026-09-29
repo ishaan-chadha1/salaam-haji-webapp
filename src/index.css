@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@font-face {
+  font-family: 'Uthman';
+  src: url('/fonts/Uthman-Taha-Naskh-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Uthman';
+  src: url('/fonts/Uthman-Taha-Naskh-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Colours from lib/src/core/util/constants.dart (emerald + gold). */
+:root {
+  --bg: #f6f8f7;
+  --surface: #ffffff;
+  --surface-2: #eef3f1;
+  --border: #dfe7e3;
+  --text: #0f1f1a;
+  --muted: #5d6b66;
+  --primary: #059669;
+  --primary-strong: #064e3b;
+  --on-primary: #ffffff;
+  --gold: #b8912a;
+  --gold-soft: #f7efd6;
+  --danger: #d0524a;
+  --hero-from: #064e3b;
+  --hero-to: #065f46;
+}
+[data-theme='dark'] {
+  --bg: #04291f;
+  --surface: #0f3a2e;
+  --surface-2: #144a3b;
+  --border: #1e5646;
+  --text: #f3f6f4;
+  --muted: #9fb5ad;
+  --primary: #d4af37;
+  --primary-strong: #eab308;
+  --on-primary: #064e3b;
+  --gold: #d4af37;
+  --gold-soft: #3a3417;
+  --danger: #ff7971;
+  --hero-from: #065f46;
+  --hero-to: #000000;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--border);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-on-primary: var(--on-primary);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-danger: var(--danger);
+  --color-hero-from: var(--hero-from);
+  --color-hero-to: var(--hero-to);
+  --font-sans: 'Open Sans', system-ui, sans-serif;
+  --font-arabic: 'Uthman', 'Amiri', serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+.arabic {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  line-height: 2;
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.leaflet-container {
+  font-family: inherit;
+  z-index: 0;
+}

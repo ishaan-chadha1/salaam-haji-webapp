@@ -1,0 +1,370 @@
+[
+  {
+    "id": "travel_riding",
+    "category": "Travel & journey",
+    "title": "Dua when mounting a vehicle / animal",
+    "arabic": "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنقَلِبُونَ",
+    "transliteration": "Subhaanal-lathee sakhkhara lanaa haathaa wa maa kunnaa lahu muqrineen. Wa innaa ilaa Rabbinaa lamunqaliboon.",
+    "translation": "Glory to Him Who has subjected this to us, and we could never have it by our efforts. Surely, to our Lord we are returning."
+  },
+  {
+    "id": "travel_safe_hajj",
+    "category": "Travel & journey",
+    "title": "Ease and shorten the journey (Hajj / Umrah)",
+    "arabic": "اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ",
+    "transliteration": "Allaahumma hawwin 'alaynaa safaranaa haathaa watwi 'annaa bu'dahu.",
+    "translation": "O Allah, make this journey easy for us and shorten its distance for us."
+  },
+  {
+    "id": "entering_masjid",
+    "category": "Masjid",
+    "title": "Entering the masjid",
+    "arabic": "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",
+    "transliteration": "Allaahum-maf-tah lee abwaaba rahmatika.",
+    "translation": "O Allah, open for me the doors of Your mercy."
+  },
+  {
+    "id": "leaving_masjid",
+    "category": "Masjid",
+    "title": "Leaving the masjid",
+    "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ",
+    "transliteration": "Allaahumma innee as'aluka min fadhlika.",
+    "translation": "O Allah, I ask You from Your bounty."
+  },
+  {
+    "id": "wudu_before",
+    "category": "Masjid",
+    "title": "Before wudu (optional remembrance)",
+    "arabic": "بِسْمِ اللَّهِ",
+    "transliteration": "Bismillaah.",
+    "translation": "In the name of Allah."
+  },
+  {
+    "id": "after_wudu",
+    "category": "Masjid",
+    "title": "After completing wudu",
+    "arabic": "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ",
+    "transliteration": "Ashhadu an laa ilaaha illallaahu wahdahu laa shareeka lahu wa ashhadu anna Muhammadan 'abduhu wa rasooluhu.",
+    "translation": "I bear witness that there is none worthy of worship except Allah alone, without partner, and I bear witness that Muhammad is His servant and Messenger."
+  },
+  {
+    "id": "entering_home",
+    "category": "Home & daily life",
+    "title": "Entering the home",
+    "arabic": "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا",
+    "transliteration": "Bismillaahi walajnaa wa bismillaahi kharajnaa wa 'alallaahi rabbinaa tawakkalnaa.",
+    "translation": "In the name of Allah we enter, in the name of Allah we leave, and upon Allah our Lord we place our trust."
+  },
+  {
+    "id": "leaving_home",
+    "category": "Home & daily life",
+    "title": "Leaving the home",
+    "arabic": "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+    "transliteration": "Bismillaahi tawakkaltu 'alallaahi laa hawla wa laa quwwata illaa billaah.",
+    "translation": "In the name of Allah, I place my trust in Allah; there is no might nor power except with Allah."
+  },
+  {
+    "id": "new_clothes",
+    "category": "Home & daily life",
+    "title": "Wearing new clothes",
+    "arabic": "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ",
+    "transliteration": "Alhamdu lillaahil-lathee kasaanee haathaa wa razaqaneehi min ghayri hawlim minnee wa laa quwwah.",
+    "translation": "All praise is for Allah Who clothed me with this and provided it for me without any might or power from myself."
+  },
+  {
+    "id": "mirror",
+    "category": "Home & daily life",
+    "title": "Looking in the mirror",
+    "arabic": "اللَّهُمَّ أَنْتَ حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي",
+    "transliteration": "Allaahumma anta hassanta khalqee fa hassin khuluqee.",
+    "translation": "O Allah, as You have made my outward form beautiful, make my character beautiful too."
+  },
+  {
+    "id": "before_sleep",
+    "category": "Sleep",
+    "title": "Before sleeping",
+    "arabic": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+    "transliteration": "Bismika Allaahumma amootu wa ahyaa.",
+    "translation": "In Your name, O Allah, I die and I live."
+  },
+  {
+    "id": "wake_up",
+    "category": "Morning & evening",
+    "title": "Waking up at night",
+    "arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+    "transliteration": "Alhamdu lillaahil-lathee ahyaanaa ba'da maa amaatanaa wa ilayhin-nushoor.",
+    "translation": "All praise is for Allah Who gave us life after causing us to die, and to Him is the resurrection."
+  },
+  {
+    "id": "morning_evening_kursi",
+    "category": "Morning & evening",
+    "title": "Ayat al-Kursi (morning & evening)",
+    "arabic": "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ … (to end of the verse)",
+    "transliteration": "Allaahu laa ilaaha illaa huwal-hayyul-qayyoom… (recite full verse from memory or mushaf).",
+    "translation": "Allah — there is no deity except Him, the Ever-Living, the Sustainer of existence… (Surah al-Baqarah 2:255). Recite morning and evening for protection, as taught in authentic hadith."
+  },
+  {
+    "id": "morning_praise",
+    "category": "Morning & evening",
+    "title": "Morning praise (brief)",
+    "arabic": "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
+    "transliteration": "Asbahnaa wa asbahal-mulku lillaah walhamdu lillaah laa ilaaha illallaahu wahdahu laa shareeka lah.",
+    "translation": "We have reached the morning and kingship belongs to Allah; all praise is for Allah; there is none worthy of worship except Allah alone, without partner."
+  },
+  {
+    "id": "evening_praise",
+    "category": "Morning & evening",
+    "title": "Evening praise (brief)",
+    "arabic": "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
+    "transliteration": "Amsaynaa wa amsal-mulku lillaah walhamdu lillaah laa ilaaha illallaahu wahdahu laa shareeka lah.",
+    "translation": "We have reached the evening and kingship belongs to Allah; all praise is for Allah; there is none worthy of worship except Allah alone, without partner."
+  },
+  {
+    "id": "before_meal",
+    "category": "Food & drink",
+    "title": "Before eating",
+    "arabic": "بِسْمِ اللَّهِ",
+    "transliteration": "Bismillaah.",
+    "translation": "In the name of Allah. (If forgotten at start: Bismillaahi awwalahu wa aakhirahu.)"
+  },
+  {
+    "id": "after_meal",
+    "category": "Food & drink",
+    "title": "After eating",
+    "arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ",
+    "transliteration": "Alhamdu lillaahil-lathee at'amanaa wa saqaanaa wa ja'alanaa muslimeen.",
+    "translation": "All praise is for Allah Who fed us, gave us drink, and made us Muslims."
+  },
+  {
+    "id": "breaking_fast",
+    "category": "Food & drink",
+    "title": "Breaking the fast (Ramadan)",
+    "arabic": "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ",
+    "transliteration": "Dhahaba az-zama'u wabtallatil-'urooqu wa thabatal-ajru in shaa' Allaah.",
+    "translation": "The thirst is gone, the veins are moistened, and the reward is confirmed, if Allah wills."
+  },
+  {
+    "id": "guest_meal",
+    "category": "Food & drink",
+    "title": "When food is praised (host)",
+    "arabic": "اللَّهُمَّ بَارِكْ لَهُمْ فِيمَا رَزَقْتَهُمْ وَاغْفِرْ لَهُمْ وَارْحَمْهُمْ",
+    "transliteration": "Allaahumma baarik lahum feemaa razaqtahum waghfir lahum warhamhum.",
+    "translation": "O Allah, bless them in what You have provided them, forgive them, and have mercy on them."
+  },
+  {
+    "id": "istikhara_summary",
+    "category": "Guidance & reminders",
+    "title": "Istikhara — how it works",
+    "arabic": "",
+    "transliteration": "",
+    "translation": "Perform two rak'ahs (optional nafl), then recite the well-known supplication of istikhara, mentioning your specific matter. Repeat over days if needed; look for ease in your heart and circumstances."
+  },
+  {
+    "id": "salah_istiftah",
+    "category": "Masjid",
+    "title": "Opening du'a after takbir (common)",
+    "arabic": "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ وَتَبَارَكَ اسْمُكَ وَتَعَالَى جَدُّكَ وَلَا إِلَهَ غَيْرُكَ",
+    "transliteration": "Subhaanaka Allaahumma wa bihamdika wa tabaaraka ismuka wa ta'aalaa jadduka wa laa ilaaha ghayruk.",
+    "translation": "Glory be to You, O Allah, and praise; blessed is Your Name and exalted is Your majesty, and there is none worthy of worship except You."
+  },
+  {
+    "id": "ruku",
+    "category": "Masjid",
+    "title": "In ruku (bowing)",
+    "arabic": "سُبْحَانَ رَبِّيَ الْعَظِيمِ",
+    "transliteration": "Subhaana Rabbiyal-'Adheem.",
+    "translation": "Glory be to my Lord, the Most Great."
+  },
+  {
+    "id": "sujood",
+    "category": "Masjid",
+    "title": "In sujood (prostration)",
+    "arabic": "سُبْحَانَ رَبِّيَ الْأَعْلَى",
+    "transliteration": "Subhaana Rabbiyal-A'laa.",
+    "translation": "Glory be to my Lord, the Most High."
+  },
+  {
+    "id": "between_sujood",
+    "category": "Masjid",
+    "title": "Between the two prostrations",
+    "arabic": "رَبِّ اغْفِرْ لِي رَبِّ اغْفِرْ لِي",
+    "transliteration": "Rabbighfir lee rabbighfir lee.",
+    "translation": "My Lord, forgive me; my Lord, forgive me."
+  },
+  {
+    "id": "after_salah",
+    "category": "Masjid",
+    "title": "After obligatory prayer (short)",
+    "arabic": "أَسْتَغْفِرُ اللَّهَ أَسْتَغْفِرُ اللَّهَ أَسْتَغْفِرُ اللَّهَ",
+    "transliteration": "Astaghfirullaah astaghfirullaah astaghfirullaah.",
+    "translation": "I seek Allah's forgiveness (three times)."
+  },
+  {
+    "id": "anxiety",
+    "category": "Protection & hardship",
+    "title": "Distress and anxiety",
+    "arabic": "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+    "transliteration": "Laa ilaaha illaa Anta subhaanaka innee kuntu minaz-zaalimeen.",
+    "translation": "There is none worthy of worship except You; glory be to You; indeed I have been of the wrongdoers. (Sayyid al-Istighfar / Yunus's dua)"
+  },
+  {
+    "id": "afflicted",
+    "category": "Protection & hardship",
+    "title": "When afflicted by calamity",
+    "arabic": "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَاخْلُفْ لِي خَيْرًا مِنْهَا",
+    "transliteration": "Innaa lillaahi wa innaa ilayhi raaji'oon. Allaahumma 'jurnee fee museebatee wakhluf lee khayran minhaa.",
+    "translation": "Indeed we belong to Allah, and to Him we return. O Allah, reward me in my affliction and replace it with something better."
+  },
+  {
+    "id": "debt",
+    "category": "Protection & hardship",
+    "title": "Worried about debt",
+    "arabic": "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ",
+    "transliteration": "Allaahummak-finee bihalaalika 'an haraamika wa aghninee bifadhlika 'amman siwaak.",
+    "translation": "O Allah, suffice me with what is lawful instead of what is forbidden, and enrich me by Your favor beyond need of anyone besides You."
+  },
+  {
+    "id": "rain",
+    "category": "Protection & hardship",
+    "title": "When it rains",
+    "arabic": "اللَّهُمَّ صَيِّبًا نَافِعًا",
+    "transliteration": "Allaahumma sayyiban naafi'an.",
+    "translation": "O Allah, (send) beneficial rain."
+  },
+  {
+    "id": "thunder",
+    "category": "Protection & hardship",
+    "title": "Hearing thunder",
+    "arabic": "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلَائِكَةُ مِنْ خِيفَتِهِ",
+    "transliteration": "Subhaanal-lathee yusabbihur-ra'du bihamdih wal-malaa'ikatu min kheefatih.",
+    "translation": "Glory be to Him whom the thunder glorifies with praise, and the angels out of awe."
+  },
+  {
+    "id": "wind",
+    "category": "Protection & hardship",
+    "title": "Strong wind",
+    "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَخَيْرَ مَا فِيهَا وَخَيْرَ مَا أُرْسِلَتْ بِهِ وَأَعُوذُ بِكَ مِنْ شَرِّهَا",
+    "transliteration": "Allaahumma innee as'aluka khayrahaa wa khayra maa feehaa wa khayra maa ursilat bihee wa a'oothu bika min sharrihaa…",
+    "translation": "O Allah, I ask You for its good, the good within it, and the good it was sent with; I seek refuge in You from its evil…"
+  },
+  {
+    "id": "knowledge",
+    "category": "Knowledge & speech",
+    "title": "Before studying / seeking knowledge",
+    "arabic": "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي وَعَلِّمْنِي مَا يَنْفَعُنِي وَزِدْنِي عِلْمًا",
+    "transliteration": "Allaahummanfa'nee bimaa 'allamtanee wa 'allimnee maa yanfa'unee wa zidnee 'ilmaa.",
+    "translation": "O Allah, benefit me with what You have taught me, teach me what benefits me, and increase me in knowledge."
+  },
+  {
+    "id": "speech",
+    "category": "Knowledge & speech",
+    "title": "Before speaking in a gathering",
+    "arabic": "اللَّهُمَّ اجْعَلْ فِي لِسَانِي صِدْقًا وَفِي قَلْبِي نُورًا",
+    "transliteration": "Allaahummaj'al fee lisaanee sidqan wa fee qalbee nooran.",
+    "translation": "O Allah, place truthfulness on my tongue and light in my heart."
+  },
+  {
+    "id": "sick_visit",
+    "category": "Social & community",
+    "title": "Visiting the sick",
+    "arabic": "لَا بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ",
+    "transliteration": "Laa ba'sa tahoorun in shaa' Allaah.",
+    "translation": "No harm; it is purification, if Allah wills (said seven times for the ill person to say)."
+  },
+  {
+    "id": "condolence",
+    "category": "Social & community",
+    "title": "Consoling someone who lost a loved one",
+    "arabic": "إِنَّ لِلَّهِ مَا أَخَذَ وَلَهُ مَا أَعْطَى وَكُلٌّ إِلَيْهِ أَجَلٌ مُسَمًّى …",
+    "transliteration": "Inna lillaahi maa akhatha wa lahuu maa a'taa wa kullun ilayhi ajalun musammaa…",
+    "translation": "To Allah belongs what He took and to Him belongs what He gave; everything has an appointed term with Him… (continue with the full condolence wording taught in sunnah)."
+  },
+  {
+    "id": "sneezing",
+    "category": "Daily remembrance",
+    "title": "When sneezing (person who sneezed)",
+    "arabic": "الْحَمْدُ لِلَّهِ",
+    "transliteration": "Alhamdu lillaah.",
+    "translation": "All praise is for Allah."
+  },
+  {
+    "id": "sneeze_response",
+    "category": "Daily remembrance",
+    "title": "Response to sneeze",
+    "arabic": "يَرْحَمُكَ اللَّهُ",
+    "transliteration": "Yarhamuka Allaah.",
+    "translation": "May Allah have mercy on you."
+  },
+  {
+    "id": "hearing_adhan",
+    "category": "Masjid",
+    "title": "After the adhan",
+    "arabic": "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ … (complete prescribed dua)",
+    "transliteration": "Allaahumma rabba haathid-da'watit-taammah…",
+    "translation": "O Allah, Lord of this perfect call… (recite the full supplication after adhan as narrated in authentic hadith)."
+  },
+  {
+    "id": "seeing_someone_trial",
+    "category": "Protection & hardship",
+    "title": "Seeing someone in trial",
+    "arabic": "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي مِمَّا ابْتَلَاكَ بِهِ وَفَضَّلَنِي عَلَى كَثِيرٍ مِمَّنْ خَلَقَ تَفْضِيلًا",
+    "transliteration": "Alhamdu lillaahil-lathee 'aafaanee mim-mab-talaaka bihi wa fadalanee 'alaa katheerin mimman khalaqa tafdeelaa.",
+    "translation": "All praise is for Allah Who spared me what He has afflicted you with and favored me greatly over many of His creation."
+  },
+  {
+    "id": "husband_wife",
+    "category": "Social & community",
+    "title": "Supplication for righteous spouse / family",
+    "arabic": "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
+    "transliteration": "Rabbanaa hab lanaa min azwaajinaa wa dhurriyaatinaa qurrata a'yunin waj'alnaa lil-muttaqeena imaamaa.",
+    "translation": "Our Lord, grant us from among our spouses and offspring comfort to our eyes and make us an example for the righteous."
+  },
+  {
+    "id": "forgiveness_daily",
+    "category": "Daily remembrance",
+    "title": "Seeking forgiveness (brief)",
+    "arabic": "أَسْتَغْفِرُ اللَّهَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ",
+    "transliteration": "Astaghfirullaahal-lathee laa ilaaha illaa Huwal-Hayyul-Qayyoomu wa atoobu ilayh.",
+    "translation": "I seek the forgiveness of Allah, besides Whom there is none worthy of worship, the Ever-Living, the Sustainer, and I repent to Him."
+  },
+  {
+    "id": "entering_toilet",
+    "category": "Home & daily life",
+    "title": "Entering the toilet",
+    "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبْثِ وَالْخَبَائِثِ",
+    "transliteration": "Allaahumma innee a'oothu bika minal-khubthi wal-khabaa'ith.",
+    "translation": "O Allah, I seek refuge in You from male and female devils."
+  },
+  {
+    "id": "leaving_toilet",
+    "category": "Home & daily life",
+    "title": "Leaving the toilet",
+    "arabic": "غُفْرَانَكَ",
+    "transliteration": "Ghufraanak.",
+    "translation": "I seek Your forgiveness."
+  },
+  {
+    "id": "market",
+    "category": "Travel & journey",
+    "title": "Entering the marketplace",
+    "arabic": "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ يُحْيِي وَيُمِيتُ وَهُوَ حَيٌّ لَا يَمُوتُ بِيَدِهِ الْخَيْرُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+    "transliteration": "Laa ilaaha illallaahu wahdahu laa shareeka lah, lahul-mulku wa lahul-hamdu yuhyee wa yumeetu wa Huwa hayyun laa yamootu biyadihil-khayru wa Huwa 'alaa kulli shay'in qadeer.",
+    "translation": "There is none worthy of worship except Allah alone, without partner; to Him belongs dominion and praise; He gives life and causes death; He is Ever-Living and does not die; in His Hand is all good, and He has power over all things."
+  },
+  {
+    "id": "mountainous",
+    "category": "Travel & journey",
+    "title": "Passing elevated ground",
+    "arabic": "اللَّهُ أَكْبَرُ",
+    "transliteration": "Allaahu Akbar.",
+    "translation": "Allah is the Greatest (recite when ascending; when descending: Subhaanallaah)."
+  },
+  {
+    "id": "new_moon",
+    "category": "Daily remembrance",
+    "title": "Seeing the new moon",
+    "arabic": "اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالْإِيمَانِ وَالسَّلَامَةِ وَالْإِسْلَامِ",
+    "transliteration": "Allaahumma ahillahu 'alaynaa bil-amni wal-eemaanis-salaamati wal-Islaam.",
+    "translation": "O Allah, bring it over us with security, faith, safety, and Islam."
+  }
+]
