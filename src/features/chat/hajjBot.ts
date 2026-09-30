@@ -25,7 +25,15 @@ function context(session: Session | null) {
   }
 }
 
+/** One automatic retry when the request never reached the server (a network
+ *  hiccup), so the pilgrim does not have to ask again. */
 export async function askHajjBot(message: string, conversationId: string | null, session: Session | null): Promise<BotReply> {
+  const first = await askOnce(message, conversationId, session)
+  if (!(first as { networkError?: boolean }).networkError) return first
+  return askOnce(message, conversationId, session)
+}
+
+async function askOnce(message: string, conversationId: string | null, session: Session | null): Promise<BotReply> {
   const token = (await supabase?.auth.getSession())?.data.session?.access_token
   if (!token) return { ok: false, text: 'Please sign in to use the Digital Mutawwif.' }
 
@@ -49,7 +57,7 @@ export async function askHajjBot(message: string, conversationId: string | null,
     return { ok: false, text: body.error ?? 'The assistant is unavailable right now. Please try again.', conversationId: body.conversationId }
   } catch (e) {
     if ((e as Error).name === 'AbortError') return { ok: false, text: 'The assistant is taking too long. Please try again.' }
-    return { ok: false, text: 'Could not reach the assistant. Check your internet connection.' }
+    return { ok: false, text: 'Could not reach the assistant. Check your internet connection.', networkError: true } as BotReply
   } finally {
     clearTimeout(timer)
   }

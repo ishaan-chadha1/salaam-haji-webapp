@@ -8,12 +8,14 @@ import { askHajjBot } from './hajjBot'
 
 type Msg = { id: string; role: 'user' | 'assistant'; content: string; error?: boolean }
 
+// Short label; a full English question is sent (the bot answered short
+// phrases in Hinglish and cannot answer location/time questions).
 const SUGGESTIONS = [
-  { text: 'Find nearest gate', icon: '📍' },
-  { text: 'Dua for Ihram', icon: '🤲' },
-  { text: 'Next prayer time', icon: '🕌' },
-  { text: 'Ritual guidance', icon: '📿' },
-  { text: 'Qibla direction', icon: '🧭' },
+  { text: 'Umrah step by step', icon: '🕋', ask: 'How do I perform Umrah step by step?' },
+  { text: 'Dua for Ihram', icon: '🤲', ask: 'What is the dua for entering Ihram? Please answer in English.' },
+  { text: 'Starting Tawaf', icon: '📿', ask: 'What should I say when I start Tawaf?' },
+  { text: "Sa'i du'as", icon: '⛰️', ask: "What should I recite at Safa and Marwah during Sa'i?" },
+  { text: 'Rules of Ihram', icon: '📜', ask: 'What is not allowed while in the state of Ihram?' },
 ]
 
 type SpeechRec = { lang: string; interimResults: boolean; continuous: boolean; start: () => void; stop: () => void; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; onend: (() => void) | null; onerror: (() => void) | null }
@@ -100,7 +102,7 @@ export function ChatScreen() {
             <p className="text-sm text-muted">Ask me anything about your pilgrimage</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {SUGGESTIONS.map((s) => (
-                <button key={s.text} onClick={() => send(s.text)} className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm text-ink hover:border-primary">
+                <button key={s.text} onClick={() => send(s.ask)} className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm text-ink hover:border-primary">
                   {s.icon} {s.text}
                 </button>
               ))}
