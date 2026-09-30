@@ -42,9 +42,9 @@ export function RitualScreen() {
 
       <h2 className="mb-2 text-sm font-semibold tracking-wide text-muted uppercase">Featured rituals</h2>
       <div className="grid grid-cols-2 gap-3">
-        <RitualTile title="Umrah" arabic="عمرة" subtitle="Lesser Pilgrimage" image="/images/umrah_tile_ritual.jpg" onClick={() => navigate('/ritual/umrah')}
+        <RitualTile title="Umrah" arabic="عمرة" subtitle="Minor Pilgrimage" image="/images/umrah_tile_ritual.jpg" onClick={() => navigate('/ritual/umrah')}
           badge={done > 0 ? `${done}/${ALL_ITEMS.length} steps` : undefined} />
-        <RitualTile title="Hajj" arabic="حج" subtitle="Greater Pilgrimage" image="/images/hajj_ritual_tile.jpg"
+        <RitualTile title="Hajj" arabic="حج" subtitle="Major Pilgrimage" image="/images/hajj_ritual_tile.jpg"
           onClick={() => (FeatureFlags.hajjEnabled ? undefined : setHajjOpen(true))} badge={FeatureFlags.hajjEnabled ? undefined : 'Coming soon'} />
       </div>
 
