@@ -1,3 +1,4 @@
+import { FeatureFlags } from './lib/featureFlags'
 import { lazy, Suspense, useEffect, type ComponentType } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Spinner } from './components/ui'
@@ -7,13 +8,14 @@ import { MoreScreen } from './features/more/MoreScreen'
 import { AppShell } from './layout/AppShell'
 import { useAuth } from './store/auth'
 import { useLocation } from './store/location'
-import { useSettings } from './store/settings'
 // Keeps family_progress in step with live rituals, whichever screen is open.
 import './features/family/familyStore'
 
 // Screens load on demand so the first paint stays small.
 const page = (loader: () => Promise<Record<string, unknown>>, name: string) =>
   lazy(async () => ({ default: (await loader())[name] as ComponentType }))
+
+const ORDER_PATHS = new Set(['/food', '/transport', '/orders'])
 
 const routes: { path: string; Component: ComponentType }[] = [
   { path: '/ritual', Component: page(() => import('./features/ritual/RitualScreen'), 'RitualScreen') },
@@ -46,14 +48,14 @@ const routes: { path: string; Component: ComponentType }[] = [
 export default function App() {
   const status = useAuth((s) => s.status)
   const init = useAuth((s) => s.init)
-  const theme = useSettings((s) => s.theme)
   const locate = useLocation((s) => s.locate)
 
   useEffect(() => init(), [init])
   useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#04291f' : '#064E3B')
-  }, [theme])
+    // One theme, matching the phone app (see index.css).
+    document.documentElement.dataset.theme = 'dark'
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#064E3B')
+  }, [])
   // Only uses location if already allowed; never prompts at launch.
   useEffect(() => {
     navigator.permissions?.query({ name: 'geolocation' }).then((p) => { if (p.state === 'granted') locate() }).catch(() => {})
@@ -70,7 +72,11 @@ export default function App() {
             <Route index element={<HomeScreen />} />
             <Route path="/more" element={<MoreScreen />} />
             {routes.map(({ path, Component }) => (
-              <Route key={path} path={path} element={<Component />} />
+              <Route
+                key={path}
+                path={path}
+                element={!FeatureFlags.ordersEnabled && ORDER_PATHS.has(path) ? <Navigate to="/" replace /> : <Component />}
+              />
             ))}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

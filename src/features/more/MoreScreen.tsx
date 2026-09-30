@@ -1,10 +1,11 @@
 import { Bookmark, ChevronRight, Download, ListChecks, Receipt, Settings } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Page, PageHeader } from '../../components/ui'
+import { FeatureFlags } from '../../lib/featureFlags'
 import { services } from '../home/HomeScreen'
 
 const extras = [
-  { title: 'My orders', to: '/orders', icon: <Receipt />, color: 'bg-orange-500' },
+  ...(FeatureFlags.ordersEnabled ? [{ title: 'My orders', to: '/orders', icon: <Receipt />, color: 'bg-orange-500' }] : []),
   { title: 'Bookmarks', to: '/bookmarks', icon: <Bookmark />, color: 'bg-rose-500' },
   { title: 'Ritual history', to: '/ritual/history', icon: <ListChecks />, color: 'bg-green-600' },
   { title: 'Offline Quran', to: '/download', icon: <Download />, color: 'bg-sky-600' },

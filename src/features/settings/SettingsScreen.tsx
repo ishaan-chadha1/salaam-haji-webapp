@@ -1,4 +1,4 @@
-import { LogOut, MapPin, Moon, Sun } from 'lucide-react'
+import { LogOut, MapPin } from 'lucide-react'
 import { Button, Card, Page, PageHeader, Segmented } from '../../components/ui'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { preferredName, useAuth } from '../../store/auth'
@@ -22,20 +22,6 @@ export function SettingsScreen() {
           {user?.isPreview && <p className="mt-1 text-xs text-gold">Preview mode{isSupabaseConfigured ? '' : ' (Supabase not configured)'}</p>}
         </Card>
 
-        <Card>
-          <p className="mb-2 font-semibold text-ink">Appearance</p>
-          <Segmented
-            value={settings.theme}
-            onChange={settings.setTheme}
-            options={[
-              { value: 'light', label: 'Light' },
-              { value: 'dark', label: 'Dark' },
-            ]}
-          />
-          <div className="mt-2 flex items-center gap-2 text-xs text-muted">
-            {settings.theme === 'dark' ? <Moon className="size-4" /> : <Sun className="size-4" />} Applies across the whole app.
-          </div>
-        </Card>
 
         <Card>
           <p className="mb-2 font-semibold text-ink">Prayer times</p>

@@ -1,11 +1,12 @@
 import clsx from 'clsx'
-import { Mic, MicOff, Send, Sparkles, Trash2 } from 'lucide-react'
+import { MessageSquarePlus, Mic, MicOff, Send, Sparkles } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Page } from '../../components/ui'
 import { stageLabel, useRitual } from '../ritual/ritualStore'
-import { replyTo } from './mutawwif'
+import { BotText } from './BotText'
+import { askHajjBot } from './hajjBot'
 
-type Msg = { id: string; role: 'user' | 'assistant'; content: string }
+type Msg = { id: string; role: 'user' | 'assistant'; content: string; error?: boolean }
 
 const SUGGESTIONS = [
   { text: 'Find nearest gate', icon: '📍' },
@@ -19,16 +20,21 @@ type SpeechRec = { lang: string; interimResults: boolean; continuous: boolean; s
 const SpeechRecognition = (window as unknown as { SpeechRecognition?: new () => SpeechRec; webkitSpeechRecognition?: new () => SpeechRec }).SpeechRecognition ??
   (window as unknown as { webkitSpeechRecognition?: new () => SpeechRec }).webkitSpeechRecognition
 
-/** Digital Mutawwif (chat_screen.dart). Replies are the same built-in answers as the app for now. */
+/** Digital Mutawwif (chat_screen.dart): answers come from the Hajj bot. */
 export function ChatScreen() {
   const session = useRitual((s) => s.session)
   const [messages, setMessages] = useState<Msg[]>([])
   const [text, setText] = useState('')
   const [thinking, setThinking] = useState(false)
+  const [conversationId, setConversationId] = useState<string | null>(null)
   const [listening, setListening] = useState(false)
   const rec = useRef<SpeechRec | null>(null)
   const end = useRef<HTMLDivElement>(null)
-  useEffect(() => end.current?.scrollIntoView({ behavior: 'smooth' }), [messages, thinking])
+  // Braces matter: newer Chrome returns a Promise from scrollIntoView, and an
+  // effect that returns it crashes React ("destroy is not a function").
+  useEffect(() => {
+    end.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, thinking])
 
   async function send(content: string) {
     const q = content.trim()
@@ -36,14 +42,11 @@ export function ChatScreen() {
     setText('')
     setMessages((m) => [...m, { id: `u${Date.now()}`, role: 'user', content: q }])
     setThinking(true)
-    try {
-      const answer = await replyTo(q, session)
-      setMessages((m) => [...m, { id: `a${Date.now()}`, role: 'assistant', content: answer }])
-    } catch {
-      setMessages((m) => [...m, { id: `a${Date.now()}`, role: 'assistant', content: 'I apologize, but I encountered an error. Please try again.' }])
-    } finally {
-      setThinking(false)
-    }
+    const reply = await askHajjBot(q, conversationId, session)
+    if (reply.conversationId) setConversationId(reply.conversationId)
+    if (!reply.ok && reply.resetConversation) setConversationId(null)
+    setMessages((m) => [...m, { id: `a${Date.now()}`, role: 'assistant', content: reply.text, error: !reply.ok }])
+    setThinking(false)
   }
 
   function toggleMic() {
@@ -74,7 +77,18 @@ export function ChatScreen() {
         </div>
         {session && <span className="rounded-full bg-[#eab308] px-2 py-0.5 text-xs font-bold text-[#064e3b]">{stageLabel(session.stage)} active</span>}
         {messages.length > 0 && (
-          <button aria-label="Clear chat" onClick={() => setMessages([])} className="grid size-9 place-items-center rounded-full bg-white/15"><Trash2 className="size-4" /></button>
+          <button
+            aria-label="New chat"
+            title="New chat"
+            disabled={thinking}
+            onClick={() => {
+              setMessages([])
+              setConversationId(null)
+            }}
+            className="grid size-9 place-items-center rounded-full bg-white/15 disabled:opacity-40"
+          >
+            <MessageSquarePlus className="size-4" />
+          </button>
         )}
       </header>
 
@@ -95,14 +109,23 @@ export function ChatScreen() {
         )}
         {messages.map((m) => (
           <div key={m.id} className={clsx('flex', m.role === 'user' ? 'justify-end' : 'justify-start')}>
-            <p className={clsx('max-w-[85%] rounded-2xl px-3 py-2 whitespace-pre-wrap', m.role === 'user' ? 'rounded-br-md bg-primary text-on-primary' : 'rounded-bl-md border border-line bg-surface text-ink')}>{m.content}</p>
+            {m.role === 'user' ? (
+              <p className="max-w-[85%] rounded-2xl rounded-br-md bg-primary px-3 py-2 whitespace-pre-wrap text-on-primary">{m.content}</p>
+            ) : (
+              <div className={clsx('max-w-[85%] rounded-2xl rounded-bl-md border px-3 py-2', m.error ? 'border-danger/40 bg-danger/10 text-danger' : 'border-line bg-surface text-ink')}>
+                <BotText text={m.content} />
+              </div>
+            )}
           </div>
         ))}
         {thinking && (
-          <div className="flex gap-1 px-2">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className="size-2 animate-bounce rounded-full bg-muted" style={{ animationDelay: `${i * 120}ms` }} />
-            ))}
+          <div className="flex items-center gap-2 px-2 text-sm text-muted">
+            <span className="flex gap-1">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className="size-2 animate-bounce rounded-full bg-muted" style={{ animationDelay: `${i * 120}ms` }} />
+              ))}
+            </span>
+            Thinking… this can take up to 30 seconds
           </div>
         )}
         <div ref={end} />

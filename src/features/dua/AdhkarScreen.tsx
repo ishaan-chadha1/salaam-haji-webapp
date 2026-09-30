@@ -17,7 +17,9 @@ export function AdhkarScreen() {
       .then((all) => setItems(all.filter((a) => a.type === 0 || a.type === (time === 'morning' ? 1 : 2))))
       .catch(() => setItems([]))
   }, [time])
-  useEffect(() => setCounts(load(key, {})), [key])
+  useEffect(() => {
+    setCounts(load(key, {}))
+  }, [key])
 
   function tap(order: number, target: number) {
     const n = Math.min(target, (counts[order] ?? 0) + 1)

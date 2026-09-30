@@ -12,19 +12,22 @@ import {
   Star,
   Sun,
 } from 'lucide-react'
-import type { ReactNode } from 'react'
+import clsx from 'clsx'
+import { useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Page } from '../../components/ui'
+import { Button, Page, Sheet } from '../../components/ui'
+import { FeatureFlags } from '../../lib/featureFlags'
+import { Announcements } from './Announcements'
 import { preferredName, useAuth } from '../../store/auth'
 import { useLocation } from '../../store/location'
 import { NextPrayerChip } from '../prayer/NextPrayerChip'
 import { UpcomingBookings } from '../orders/UpcomingBookings'
 
 const tiles = [
-  { title: 'Family', image: '/images/family_tile.jpg', to: '/family' },
-  { title: 'Ritual', image: '/images/ritual.jpg', to: '/ritual' },
-  { title: 'Food', image: '/images/food_tile.jpg', to: '/food' },
-  { title: 'Transport', image: '/images/transport_tile.jpg', to: '/transport' },
+  { title: 'Family', image: '/images/family_tile.jpg', to: '/family', soon: false },
+  { title: 'Ritual', image: '/images/ritual.jpg', to: '/ritual', soon: false },
+  { title: 'Food', image: '/images/food_tile.jpg', to: '/food', soon: !FeatureFlags.ordersEnabled },
+  { title: 'Transport', image: '/images/transport_tile.jpg', to: '/transport', soon: !FeatureFlags.ordersEnabled },
 ]
 
 export const services: { title: string; to: string; icon: ReactNode; color: string }[] = [
@@ -44,6 +47,7 @@ export function HomeScreen() {
   const user = useAuth((s) => s.user)
   const place = useLocation((s) => s.place)
   const navigate = useNavigate()
+  const [soonTitle, setSoonTitle] = useState<string | null>(null)
   const hijri = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date())
 
   return (
@@ -60,18 +64,33 @@ export function HomeScreen() {
         </div>
       </section>
 
-      <UpcomingBookings />
+      {FeatureFlags.ordersEnabled ? <UpcomingBookings /> : <Announcements />}
 
       <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {tiles.map((t) => (
           <button
             key={t.title}
-            onClick={() => navigate(t.to)}
+            onClick={() => (t.soon ? setSoonTitle(t.title) : navigate(t.to))}
+            aria-label={t.soon ? `${t.title}, coming soon` : t.title}
             className="group relative aspect-[0.9] overflow-hidden rounded-2xl text-left shadow-sm sm:aspect-[0.8]"
           >
-            <img src={t.image} alt="" className="absolute inset-0 size-full object-cover transition duration-300 group-hover:scale-105" />
-            <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-            <span className="absolute bottom-3 left-3 text-lg font-bold text-white">{t.title}</span>
+            <img
+              src={t.image}
+              alt=""
+              className={clsx(
+                'absolute inset-0 size-full object-cover transition duration-300',
+                t.soon ? 'scale-110 blur-[5px] grayscale' : 'group-hover:scale-105',
+              )}
+            />
+            <span className={clsx('absolute inset-0', t.soon ? 'bg-black/45' : 'bg-gradient-to-t from-black/75 via-black/10 to-transparent')} />
+            {t.soon ? (
+              <span className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <span className="text-lg font-bold text-white">{t.title}</span>
+                <span className="rounded-full bg-[#eab308] px-2.5 py-0.5 text-xs font-extrabold text-[#064e3b]">Coming soon</span>
+              </span>
+            ) : (
+              <span className="absolute bottom-3 left-3 text-lg font-bold text-white">{t.title}</span>
+            )}
           </button>
         ))}
       </div>
@@ -90,6 +109,12 @@ export function HomeScreen() {
           </button>
         ))}
       </div>
+      <Sheet open={soonTitle != null} onClose={() => setSoonTitle(null)} title={`${soonTitle ?? ''} coming soon`}>
+        <p className="text-ink">
+          We are focusing on Umrah, the ritual guide and the family tracker first. Ordering will be available in a later update.
+        </p>
+        <Button className="mt-4 w-full" onClick={() => setSoonTitle(null)}>OK</Button>
+      </Sheet>
     </Page>
   )
 }
