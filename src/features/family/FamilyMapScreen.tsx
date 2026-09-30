@@ -1,6 +1,7 @@
 import L from 'leaflet'
 import { Navigation } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import { Card, Empty, Page, PageHeader } from '../../components/ui'
 import { HolySites } from '../../lib/holySites'
@@ -13,7 +14,7 @@ export const OSM = { url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
 
 const pin = (html: string) => L.divIcon({ html, className: '', iconSize: [36, 36], iconAnchor: [18, 18] })
 
-const personIcon = (name: string, head: boolean) =>
+export const personIcon = (name: string, head: boolean) =>
   pin(
     `<div style="width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-family:Open Sans,sans-serif;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,.35);background:${head ? '#d4af37' : '#059669'};color:${head ? '#064e3b' : 'white'}">${(name.trim()[0] ?? '?').toUpperCase()}</div>`,
   )
@@ -21,14 +22,16 @@ const personIcon = (name: string, head: boolean) =>
 const placeIcon = (color: string, emoji: string) =>
   pin(`<div style="width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:16px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,.35);background:${color}">${emoji}</div>`)
 
-function FitAll({ points }: { points: [number, number][] }) {
+function FitAll({ points, focus }: { points: [number, number][]; focus?: [number, number] | null }) {
   const map = useMap()
   useEffect(() => {
-    if (points.length === 1) map.setView(points[0], 16)
+    // Opened from a member's profile: centre on them (or their place).
+    if (focus) map.setView(focus, 17)
+    else if (points.length === 1) map.setView(points[0], 16)
     else if (points.length > 1) map.fitBounds(L.latLngBounds(points), { padding: [40, 40], maxZoom: 17 })
     // Fit once per set of people, not on every position update.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, points.length])
+  }, [map, points.length, focus?.[0], focus?.[1]])
   return null
 }
 
@@ -40,11 +43,27 @@ export function FamilyMapScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const [params] = useSearchParams()
+  const focusUser = params.get('focus')
+  const focusPlace = params.get('place')
   const people = f.members.filter((m) => f.locations[m.userId])
   const points = useMemo(
     () => [...people.map((m) => [f.locations[m.userId].lat, f.locations[m.userId].lng] as [number, number]), ...f.places.map((p) => [p.lat, p.lng] as [number, number])],
     [people, f.locations, f.places],
   )
+  const focusLoc = focusUser ? f.locations[focusUser] : undefined
+  const place = focusPlace ? f.places.find((pl) => pl.id === focusPlace) : undefined
+  const focus: [number, number] | null = place
+    ? [place.lat, place.lng]
+    : focusLoc
+      ? [focusLoc.lat, focusLoc.lng]
+      : focusUser
+        ? (() => {
+            // Not sharing a location: fall back to their first saved place.
+            const first = f.places.find((pl) => pl.userId === focusUser)
+            return first ? ([first.lat, first.lng] as [number, number]) : null
+          })()
+        : null
 
   return (
     <Page className="max-w-5xl">
@@ -86,7 +105,7 @@ export function FamilyMapScreen() {
                   </Marker>
                 )
               })}
-              <FitAll points={points} />
+              <FitAll points={points} focus={focus} />
             </MapContainer>
           </div>
           <div className="mt-3 flex gap-2 overflow-x-auto pb-1">

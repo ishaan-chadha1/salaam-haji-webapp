@@ -24,6 +24,7 @@ const routes: { path: string; Component: ComponentType }[] = [
   { path: '/ritual/history', Component: page(() => import('./features/ritual/HistoryScreen'), 'HistoryScreen') },
   { path: '/family', Component: page(() => import('./features/family/FamilyScreen'), 'FamilyScreen') },
   { path: '/family/map', Component: page(() => import('./features/family/FamilyMapScreen'), 'FamilyMapScreen') },
+  { path: '/family/member/:userId', Component: page(() => import('./features/family/MemberProfileScreen'), 'MemberProfileScreen') },
   { path: '/family/chat', Component: page(() => import('./features/family/FamilyChatScreen'), 'FamilyChatScreen') },
   { path: '/food', Component: page(() => import('./features/food/FoodOrderScreen'), 'FoodOrderScreen') },
   { path: '/transport', Component: page(() => import('./features/transport/TransportOrderScreen'), 'TransportOrderScreen') },

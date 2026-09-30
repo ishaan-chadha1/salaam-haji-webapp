@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Check, Copy, Crown, Hourglass, LogOut, Map, MessageSquare, Pencil, Share2, UserMinus, Users, X } from 'lucide-react'
+import { Check, ChevronRight, Copy, Crown, Hourglass, LogOut, Map, MessageSquare, Pencil, Share2, Users, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, Empty, Field, Notice, Page, PageHeader, Sheet, Spinner } from '../../components/ui'
@@ -201,7 +201,7 @@ function FamilyHome() {
             const p = f.progress[m.userId]
             const loc = f.locations[m.userId]
             return (
-              <Card key={m.userId}>
+              <Card key={m.userId} onClick={() => navigate(`/family/member/${m.userId}`)}>
                 <div className="flex items-center gap-3">
                   <Avatar name={m.name} head={m.role === 'head'} />
                   <div className="min-w-0 flex-1">
@@ -218,11 +218,10 @@ function FamilyHome() {
                       {m.isLocationSharingEnabled && loc && <> · 📍 {timeAgo(loc.timestamp)}</>}
                     </p>
                   </div>
-                  {isHead && m.userId !== me && (
-                    <button aria-label={`Remove ${m.name}`} onClick={() => setRemoveId(m.userId)} className="grid size-9 place-items-center rounded-full text-muted hover:text-danger">
-                      <UserMinus className="size-4" />
-                    </button>
-                  )}
+                  {/* The whole row opens the profile (Remove is there). */}
+                  <span className="flex shrink-0 items-center text-xs font-semibold text-gold">
+                    View profile <ChevronRight className="size-4" />
+                  </span>
                 </div>
               </Card>
             )
