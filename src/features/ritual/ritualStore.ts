@@ -62,7 +62,11 @@ type RitualState = {
   history: HistoryEntry[]
   checklist: ChecklistState
   wakeLockActive: boolean
+  /** How long location stopped while the screen was locked or the tab hidden
+   *  during a live ritual (browsers stop location then). Null when none. */
+  lockGapMs: number | null
 
+  dismissLockGap: () => void
   setDemoMode: (on: boolean) => void
   start: (stage: Stage, opts?: { source?: 'manual' | 'checklist'; checklistItemId?: string }) => void
   pause: () => void
@@ -243,7 +247,7 @@ export const useRitual = create<RitualState>((set, get) => {
       save(CHECKLIST_KEY, checklist)
     }
     persistSession(null)
-    set({ session: null, completed: entry, history, checklist, simulating: false, simPending: false, gps: 'idle' })
+    set({ lockGapMs: null, session: null, completed: entry, history, checklist, simulating: false, simPending: false, gps: 'idle' })
   }
 
   return {
@@ -263,6 +267,9 @@ export const useRitual = create<RitualState>((set, get) => {
     history: load<HistoryEntry[]>(HISTORY_KEY, []),
     checklist: load<ChecklistState>(CHECKLIST_KEY, {}),
     wakeLockActive: false,
+    lockGapMs: null,
+
+    dismissLockGap: () => set({ lockGapMs: null }),
 
     setDemoMode: (on) => {
       save(DEMO_KEY, on)
@@ -291,7 +298,7 @@ export const useRitual = create<RitualState>((set, get) => {
         isDemo,
       }
       persistSession(session)
-      set({ session, completed: null, tawafLive: null, saiLive: null, route: [], distance: 0, steps: 0, gpsError: null, simulating: false, simPending: false })
+      set({ session, completed: null, tawafLive: null, saiLive: null, route: [], distance: 0, steps: 0, gpsError: null, simulating: false, simPending: false, lockGapMs: null })
       requestWakeLock(set)
       if (isDemo) {
         set({ gps: 'demo' })
@@ -344,7 +351,7 @@ export const useRitual = create<RitualState>((set, get) => {
       releaseWakeLock()
       simFixes = null
       persistSession(null)
-      set({ session: null, tawafLive: null, saiLive: null, route: [], gps: 'idle', simulating: false, simPending: false })
+      set({ session: null, tawafLive: null, saiLive: null, route: [], gps: 'idle', simulating: false, simPending: false, lockGapMs: null })
     },
 
     playDemoWalk: () => {
@@ -384,11 +391,30 @@ export const useRitual = create<RitualState>((set, get) => {
   }
 })
 
-// Reacquire the screen wake lock when the tab becomes visible again.
+/** When a live ritual's tab was hidden (screen locked, app switched). */
+let hiddenAt: number | null = null
+
+/** A gap shorter than this is not worth mentioning. */
+const LOCK_GAP_NOTICE_MS = 15_000
+
+// Browsers stop location while the screen is locked or the tab is hidden.
+// Note how long, so the pilgrim can add laps walked meanwhile; and reacquire
+// the screen wake lock on return.
 if (typeof document !== 'undefined') {
   document.addEventListener('visibilitychange', () => {
-    const s = useRitual.getState().session
-    if (document.visibilityState === 'visible' && s && s.pauseStart == null) requestWakeLock(useRitual.setState)
+    const st = useRitual.getState()
+    const s = st.session
+    const live = s != null && s.pauseStart == null && !s.isDemo && s.laps < s.totalLaps
+    if (document.visibilityState === 'hidden') {
+      hiddenAt = live ? Date.now() : null
+      return
+    }
+    if (s && s.pauseStart == null) requestWakeLock(useRitual.setState)
+    if (live && hiddenAt != null) {
+      const gap = Date.now() - hiddenAt
+      if (gap >= LOCK_GAP_NOTICE_MS) useRitual.setState({ lockGapMs: (st.lockGapMs ?? 0) + gap })
+    }
+    hiddenAt = null
   })
 }
 

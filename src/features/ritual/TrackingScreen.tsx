@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ArrowLeft, ArrowRight, CheckCircle2, Footprints, Pause, Play, Plus, Route, Satellite, Square, Timer } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle2, Footprints, Lock, Smartphone, Pause, Play, Plus, Route, Satellite, Square, Timer } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, Notice, Page, PageHeader, Sheet } from '../../components/ui'
@@ -18,6 +18,7 @@ export function TrackingScreen() {
   const [, tick] = useState(0)
   const [endOpen, setEndOpen] = useState(false)
   const [completeOpen, setCompleteOpen] = useState(false)
+  const [keepOpenSeen, setKeepOpenSeen] = useState(false)
   useEffect(() => {
     const id = setInterval(() => tick((n) => n + 1), 1000)
     return () => clearInterval(id)
@@ -52,6 +53,35 @@ export function TrackingScreen() {
       <div className="space-y-3">
         {isTawaf && live && live.direction === -1 && reachedStart && !paused && <WrongWayBanner />}
         {r.gpsError && !s.isDemo && <Notice tone="warn">{r.gpsError}</Notice>}
+
+        {/* Location stopped while the screen was locked: laps may be missing. */}
+        {!s.isDemo && r.lockGapMs != null && s.laps < s.totalLaps && (
+          <div className="rounded-2xl border border-gold/60 bg-gold-soft p-4">
+            <p className="flex items-center gap-2 font-bold text-ink">
+              <Lock className="size-5 text-gold" /> Tracking stopped for {formatGap(r.lockGapMs)}
+            </p>
+            <p className="mt-1 text-sm text-muted">
+              Your screen was locked or the app was in the background, so {isTawaf ? 'laps' : 'trips'} you walked then were not counted. Add any you completed.
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <Button onClick={() => r.addManualLap()} disabled={paused}><Plus className="size-4" /> Add a {isTawaf ? 'lap' : 'trip'}</Button>
+              <Button variant="secondary" onClick={r.dismissLockGap}>Done</Button>
+            </div>
+          </div>
+        )}
+
+        {/* Before the first lap of a live ritual: how web tracking works. */}
+        {!s.isDemo && !keepOpenSeen && s.laps === 0 && (
+          <div className="rounded-2xl border border-gold/60 bg-gold-soft p-4">
+            <p className="flex items-center gap-2 font-bold text-ink">
+              <Smartphone className="size-5 text-gold" /> Keep this screen on and open
+            </p>
+            <p className="mt-1 text-sm text-muted">
+              Locking your phone or switching apps stops {isTawaf ? 'lap' : 'trip'} counting in the browser. For hands-free tracking with your phone in your pocket, use the Salaam Haji app.
+            </p>
+            <Button variant="secondary" className="mt-3 w-full" onClick={() => setKeepOpenSeen(true)}>Got it</Button>
+          </div>
+        )}
 
         <Card className="flex flex-col items-center py-5">
           {isTawaf ? (
@@ -229,4 +259,13 @@ function TripBar({ laps, total, current }: { laps: number; total: number; curren
       ))}
     </div>
   )
+}
+
+/** "45 s", "3 min", "1 h 5 min". */
+function formatGap(ms: number): string {
+  const s = Math.round(ms / 1000)
+  if (s < 60) return `${s} s`
+  const m = Math.round(s / 60)
+  if (m < 60) return `${m} min`
+  return `${Math.floor(m / 60)} h ${m % 60} min`
 }
