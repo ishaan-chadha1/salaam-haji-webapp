@@ -163,6 +163,10 @@ export type SaiLiveInfo = {
   distanceToMarwah: number
   accuracy: number
   position: LatLng
+  /** 1 = walking towards Marwah, -1 = towards Safa (same as SaiLapCounter). */
+  heading: 1 | -1
+  /** Share of the current trip walked, 0-1. */
+  tripFraction: number
 }
 
 /**
@@ -178,6 +182,8 @@ export class SaiTracker {
   totalDistance = 0
   live: SaiLiveInfo | null = null
   route: LatLng[] = []
+  private heading: 1 | -1 = 1
+  private lastProgress: number | null = null
 
   get steps(): number {
     return Math.round(this.totalDistance / RitualLimits.averageStepLengthMeters)
@@ -190,6 +196,8 @@ export class SaiTracker {
     this.totalDistance = 0
     this.live = null
     this.route = []
+    this.heading = 1
+    this.lastProgress = null
   }
 
   handleFix(fix: Fix): number {
@@ -197,7 +205,13 @@ export class SaiTracker {
     const toSafa = distanceMeters(HolySites.safa.lat, HolySites.safa.lng, p.lat, p.lng)
     const toMarwah = distanceMeters(HolySites.marwah.lat, HolySites.marwah.lng, p.lat, p.lng)
     const sum = toSafa + toMarwah
-    this.live = { progress: sum < 1 ? 0.5 : toSafa / sum, distanceToSafa: toSafa, distanceToMarwah: toMarwah, accuracy: fix.accuracy, position: p }
+    const progress = sum < 1 ? 0.5 : toSafa / sum
+    if (this.lastProgress == null) this.heading = progress < 0.5 ? 1 : -1
+    else if (Math.abs(progress - this.lastProgress) > 0.02) this.heading = progress > this.lastProgress ? 1 : -1
+    if (this.lastProgress == null || Math.abs(progress - this.lastProgress) > 0.02) this.lastProgress = progress
+    const leg = RitualLimits.minSaiLapDistanceMeters / 0.7
+    const tripFraction = Math.min(1, Math.max(0, (this.totalDistance - this.lapStartDistance) / leg))
+    this.live = { progress, distanceToSafa: toSafa, distanceToMarwah: toMarwah, accuracy: fix.accuracy, position: p, heading: this.heading, tripFraction }
     if (!this.last) {
       this.last = p
       this.lapStart = p
@@ -209,6 +223,10 @@ export class SaiTracker {
     this.totalDistance += step
     this.route.push(p)
     this.last = p
+    if (this.live) {
+      const leg = RitualLimits.minSaiLapDistanceMeters / 0.7
+      this.live.tripFraction = Math.min(1, Math.max(0, (this.totalDistance - this.lapStartDistance) / leg))
+    }
     const atEnd = toSafa < RitualLimits.saiEndpointThresholdMeters || toMarwah < RitualLimits.saiEndpointThresholdMeters
     const lapDistance = this.totalDistance - this.lapStartDistance
     if (atEnd && lapDistance >= RitualLimits.minSaiLapDistanceMeters && this.lapStart) {
@@ -216,6 +234,9 @@ export class SaiTracker {
       if (fromStart > 50) {
         this.lapStart = p
         this.lapStartDistance = this.totalDistance
+        // At the far hill: the next trip goes back.
+        this.heading = toSafa < RitualLimits.saiEndpointThresholdMeters ? 1 : -1
+        this.live = { ...this.live, heading: this.heading, tripFraction: 0 }
         return 1
       }
     }

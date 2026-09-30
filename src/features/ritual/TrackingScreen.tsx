@@ -1,12 +1,12 @@
 import clsx from 'clsx'
-import { CheckCircle2, Footprints, Pause, Play, Plus, Route, Satellite, Square, Timer } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle2, Footprints, Pause, Play, Plus, Route, Satellite, Square, Timer } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, Notice, Page, PageHeader, Sheet } from '../../components/ui'
 import { formatDistance } from '../../lib/geo'
 import { HolySites } from '../../lib/holySites'
 import { CompletionView } from './CompletionView'
-import { DuaCard, StartGuideCard, WrongWayBanner } from './components/TawafCards'
+import { DuaCard, SaiDuaCard, StartGuideCard, WrongWayBanner } from './components/TawafCards'
 import { KaabaRing } from './components/KaabaRing'
 import { RouteMap } from './components/RouteMap'
 import { elapsedMs, formatDuration, stageLabel, useRitual, type GpsStatus, type Stage } from './ritualStore'
@@ -66,12 +66,13 @@ export function TrackingScreen() {
               />
             </div>
           ) : (
-            <SaiBar progress={r.saiLive?.progress ?? 0} laps={s.laps} />
+            <SaiBar progress={r.saiLive?.progress ?? 0} laps={s.laps} heading={r.saiLive?.heading ?? 1} started={r.saiLive != null} />
           )}
           <p className="mt-2 text-5xl font-bold text-ink tabular-nums">
             {s.laps}<span className="text-2xl text-muted"> / {s.totalLaps}</span>
           </p>
           <p className="text-sm text-muted">{isTawaf ? 'laps' : 'trips'}{paused ? ' · paused' : ''}</p>
+          {!isTawaf && <TripBar laps={s.laps} total={s.totalLaps} current={r.saiLive?.tripFraction ?? 0} />}
         </Card>
 
         <div className="grid grid-cols-3 gap-2">
@@ -100,6 +101,9 @@ export function TrackingScreen() {
 
         {isTawaf && !reachedStart && <StartGuideCard live={live} />}
         {isTawaf && reachedStart && <DuaCard laps={s.laps} totalLaps={s.totalLaps} lapFraction={live?.lapFraction ?? 0} />}
+        {!isTawaf && r.saiLive && (
+          <SaiDuaCard laps={s.laps} totalLaps={s.totalLaps} tripFraction={r.saiLive.tripFraction} heading={r.saiLive.heading} />
+        )}
 
         {isTawaf ? (
           <RouteMap
@@ -188,7 +192,8 @@ function GpsBadge({ status, accuracy }: { status: GpsStatus; accuracy?: number }
   )
 }
 
-function SaiBar({ progress, laps }: { progress: number; laps: number }) {
+function SaiBar({ progress, laps, heading, started }: { progress: number; laps: number; heading: 1 | -1; started: boolean }) {
+  const toMarwah = heading === 1
   return (
     <div className="w-full max-w-sm px-2 py-4">
       <div className="mb-2 flex justify-between text-sm font-semibold text-ink">
@@ -196,11 +201,32 @@ function SaiBar({ progress, laps }: { progress: number; laps: number }) {
         <span>Marwah <span className="arabic text-gold">المروة</span></span>
       </div>
       <div className="relative h-3 rounded-full bg-surface-2">
-        <div className="absolute top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-primary shadow transition-all" style={{ left: `${Math.min(100, Math.max(0, progress * 100))}%` }} />
+        <div
+          className="absolute top-1/2 grid size-7 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-white bg-emerald text-white shadow transition-all"
+          style={{ left: `${Math.min(100, Math.max(0, progress * 100))}%` }}
+        >
+          {toMarwah ? <ArrowRight className="size-4" /> : <ArrowLeft className="size-4" />}
+        </div>
       </div>
-      <p className="mt-3 text-center text-xs text-muted">
-        {laps < 7 ? `Next: walk to ${laps % 2 === 0 ? 'Marwah' : 'Safa'}` : "Sa'i complete at Marwah"}
+      <p className="mt-3 text-center text-sm font-semibold text-emerald">
+        {laps >= 7 ? "Sa'i complete at Marwah" : started ? `Trip ${laps + 1} · to ${toMarwah ? 'Marwah' : 'Safa'}` : 'Start at Safa'}
       </p>
+    </div>
+  )
+}
+
+/** Seven trips: done ones gold, the current one filling up. */
+function TripBar({ laps, total, current }: { laps: number; total: number; current: number }) {
+  return (
+    <div className="mt-3 flex w-full max-w-sm gap-1 px-2">
+      {Array.from({ length: total }, (_, i) => (
+        <div key={i} className="h-2 flex-1 overflow-hidden rounded bg-surface-2">
+          <div
+            className={clsx('h-full transition-all', i < laps ? 'bg-gold' : 'bg-emerald')}
+            style={{ width: `${i < laps ? 100 : i === laps ? Math.round(current * 100) : 0}%` }}
+          />
+        </div>
+      ))}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { AlertTriangle, Hand, Heart, Navigation, Sparkles } from 'lucide-react'
+import { AlertTriangle, BookOpen, Hand, Heart, Navigation, Sparkles } from 'lucide-react'
 import { Card } from '../../../components/ui'
 import { formatDistance } from '../../../lib/geo'
 import type { TawafLiveInfo } from '../engine/tracker'
@@ -83,6 +83,45 @@ function DuaContent({ icon, heading, arabic, transliteration, note, highlight }:
       {transliteration && <p className="mt-1 text-sm text-ink italic">{transliteration}</p>}
       <p className="mt-1 text-sm text-muted">{note}</p>
     </Card>
+  )
+}
+
+/** What to say during Sa'i (SaiDuaCard in sai_cards.dart): Qur'an 2:158
+ *  setting off from Safa, takbir and tahlil at each hill, free du'a between.
+ *  Wording to be checked by a scholar before the pilot. */
+export function SaiDuaCard({ laps, totalLaps, tripFraction, heading }: { laps: number; totalLaps: number; tripFraction: number; heading: 1 | -1 }) {
+  if (laps >= totalLaps) return null
+  const atHill = tripFraction < 0.12
+  if (atHill && laps === 0) {
+    return (
+      <DuaContent
+        highlight
+        icon={<BookOpen />}
+        heading="Begin at Safa"
+        arabic="إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللَّهِ"
+        transliteration="Innas-Safa wal-Marwata min sha'a'irillah"
+        note="Indeed, Safa and Marwah are among the symbols of Allah. (Qur'an 2:158). Face the Kaaba, raise your hands and make du'a, then walk towards Marwah."
+      />
+    )
+  }
+  if (atHill) {
+    return (
+      <DuaContent
+        highlight
+        icon={<Hand />}
+        heading={`Trip ${laps} done · at ${heading === 1 ? 'Safa' : 'Marwah'}`}
+        arabic="اللَّهُ أَكْبَرُ، لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ"
+        transliteration="Allahu Akbar, La ilaha illallahu wahdahu la sharika lah"
+        note={`Face the Kaaba, raise your hands and make du'a, then set off on trip ${laps + 1}.`}
+      />
+    )
+  }
+  return (
+    <DuaContent
+      icon={<Heart />}
+      heading={`Trip ${laps + 1} of ${totalLaps}`}
+      note="Remember Allah and make du'a in your own words. Men walk briskly between the green lights."
+    />
   )
 }
 

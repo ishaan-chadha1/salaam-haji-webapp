@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 import { destination } from '../../../lib/geo'
 import { HolySites } from '../../../lib/holySites'
 import { TawafGeometry } from './geometry'
@@ -187,5 +187,30 @@ describe("Sa'i", () => {
     const half = SaiTracker.simulatedWalk(t0).slice(0, 80)
     const back = [...half].reverse().map((f, i) => ({ ...f, time: t0 + 200_000 + i * 1000 }))
     expect([...half, ...back].reduce((n, f) => n + s.handleFix(f), 0)).toBe(0)
+  })
+})
+
+describe("Sa'i direction and trip progress", () => {
+  it('flips direction at each hill and counts 7 trips', () => {
+    const t = new SaiTracker()
+    const fixes = SaiTracker.simulatedWalk(0)
+    const perLeg = Math.round(fixes.length / 7)
+    let trips = 0
+    const headings: number[] = []
+    fixes.forEach((f, i) => {
+      trips += t.handleFix(f)
+      if (i % perLeg === Math.floor(perLeg / 2)) headings.push(t.live!.heading)
+    })
+    expect(trips).toBe(7)
+    expect(headings.slice(0, 4)).toEqual([1, -1, 1, -1])
+  })
+
+  it('reports trip progress mid-way', () => {
+    const t = new SaiTracker()
+    const fixes = SaiTracker.simulatedWalk(0)
+    const half = Math.round(fixes.length / 14)
+    fixes.slice(0, half).forEach((f) => t.handleFix(f))
+    expect(t.live!.tripFraction).toBeGreaterThan(0.4)
+    expect(t.live!.tripFraction).toBeLessThan(0.6)
   })
 })
