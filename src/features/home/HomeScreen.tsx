@@ -52,7 +52,7 @@ export function HomeScreen() {
 
   return (
     <Page>
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#064e3b] via-[#065f46] to-black p-5 text-white">
+      <section className="relative overflow-hidden rounded-3xl border border-[#eab308]/25 bg-gradient-to-br from-[#065f46] via-[#064e3b] to-[#022c22] p-5 text-white">
         <p className="text-sm text-white/70">Assalamu Alaikum</p>
         <h1 className="mt-0.5 text-2xl font-bold">{preferredName(user)}</h1>
         <p className="mt-1 text-sm text-white/70">{hijri}</p>

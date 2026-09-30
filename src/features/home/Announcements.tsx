@@ -17,8 +17,11 @@ export function Announcements() {
   const [active, setActive] = useState(0)
   return (
     <section className="mt-5">
+      {/* Phone: swipe, bleeding to the screen edges. 640px+: a 2x2 grid
+          aligned with the rest of the page (the swipe row overflowed the
+          content column and clipped a third card on desktop). */}
       <div
-        className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]"
+        className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0"
         onScroll={(e) => {
           const el = e.currentTarget
           const card = el.firstElementChild as HTMLElement | null
@@ -29,7 +32,7 @@ export function Announcements() {
           <button
             key={s.title}
             onClick={() => navigate(s.to)}
-            className="flex w-[85%] max-w-md shrink-0 snap-start items-center gap-3 rounded-2xl border border-[#eab308]/40 bg-gradient-to-br from-[#064e3b] to-[#022c22] p-4 text-left text-white sm:w-[48%]"
+            className="flex w-[85%] max-w-md shrink-0 snap-start items-center gap-3 rounded-2xl border border-[#eab308]/40 bg-gradient-to-br from-[#064e3b] to-[#022c22] p-4 text-left text-white transition hover:border-[#eab308]/80 sm:w-auto sm:max-w-none"
           >
             <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-[#eab308]/20 text-[#eab308] [&>svg]:size-6">{s.icon}</span>
             <span className="min-w-0 flex-1">
@@ -41,7 +44,7 @@ export function Announcements() {
           </button>
         ))}
       </div>
-      <div className="mt-2 flex justify-center gap-1.5" aria-hidden>
+      <div className="mt-2 flex justify-center gap-1.5 sm:hidden" aria-hidden>
         {SLIDES.map((s, i) => (
           <span key={s.title} className={`h-1.5 rounded-full transition-all ${i === active ? 'w-5 bg-primary' : 'w-1.5 bg-line'}`} />
         ))}
