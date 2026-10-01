@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Button, Field, Notice, Segmented, Sheet } from '../../components/ui'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { useAuth } from '../../store/auth'
@@ -21,6 +21,12 @@ export function LoginScreen() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
+  // Back from a reset link but not signed in: it expired or was already used.
+  const [staleReset] = useState(auth.recovering)
+  useEffect(() => {
+    if (staleReset) auth.endRecovery()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [resetOpen, setResetOpen] = useState(false)
   const [resetEmail, setResetEmail] = useState('')
 
@@ -115,6 +121,9 @@ export function LoginScreen() {
                     Forgot password?
                   </button>
                 )}
+                {staleReset && !error && !info && (
+                  <Notice tone="warn">That reset link has expired or was already used. Tap Forgot password to get a new one.</Notice>
+                )}
                 {error && <Notice tone="error">{error}</Notice>}
                 {info && (
                   <Notice tone="success">
@@ -165,7 +174,7 @@ export function LoginScreen() {
               run(async () => {
                 await auth.resetPassword(resetEmail)
                 setResetOpen(false)
-                setInfo('Password reset email sent.')
+                setInfo('Password reset email sent. Open the link in it to choose a new password.')
               })
             }
           >

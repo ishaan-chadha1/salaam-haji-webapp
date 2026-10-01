@@ -28,12 +28,29 @@ type AuthState = {
   }) => Promise<{ needsConfirmation: boolean }>
   signInWithGoogle: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
+  /** Opened from a reset-password email: ask for a new password before the app. */
+  recovering: boolean
+  setNewPassword: (password: string) => Promise<void>
+  endRecovery: () => void
   resendConfirmation: (email: string) => Promise<void>
   enterPreview: (name: string) => void
   signOut: () => Promise<void>
 }
 
 const PREVIEW_KEY = 'preview_user_v1'
+
+/** Reset emails link back to /?reset=1 (see resetPassword). Read before
+ *  Supabase tidies the URL, so it does not depend on event timing. */
+const RESET_PARAM = 'reset'
+const openedFromResetLink = () =>
+  typeof window !== 'undefined' &&
+  (new URLSearchParams(window.location.search).has(RESET_PARAM) || /type=recovery/.test(window.location.hash))
+
+function clearResetParam() {
+  const url = new URL(window.location.href)
+  url.searchParams.delete(RESET_PARAM)
+  window.history.replaceState(null, '', url.pathname + url.search)
+}
 
 function nameFrom(meta: Record<string, unknown> | undefined): string | null {
   if (!meta) return null
@@ -64,6 +81,7 @@ export function preferredName(user: AppUser | null): string {
 export const useAuth = create<AuthState>((set) => ({
   status: 'loading',
   user: null,
+  recovering: openedFromResetLink(),
 
   init: () => {
     if (!supabase) {
@@ -75,7 +93,8 @@ export const useAuth = create<AuthState>((set) => ({
       const u = data.session?.user
       set(u ? { status: 'signedIn', user: toUser(u) } : { status: 'signedOut', user: null })
     })
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') set({ recovering: true })
       const u = session?.user
       set(u ? { status: 'signedIn', user: toUser(u) } : { status: 'signedOut', user: null })
     })
@@ -118,8 +137,26 @@ export const useAuth = create<AuthState>((set) => ({
 
   resetPassword: async (email) => {
     if (!supabase) throw new Error('Password reset needs Supabase.')
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: window.location.origin })
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/?${RESET_PARAM}=1`,
+    })
     if (error) throw error
+  },
+
+  setNewPassword: async (password) => {
+    if (!supabase) return
+    const { error } = await supabase.auth.updateUser({ password })
+    if (error) {
+      if (/different from the old/i.test(error.message)) throw new Error('Choose a password different from your old one.')
+      throw error
+    }
+    clearResetParam()
+    set({ recovering: false })
+  },
+
+  endRecovery: () => {
+    clearResetParam()
+    set({ recovering: false })
   },
 
   resendConfirmation: async (email) => {

@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, type ComponentType } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Spinner } from './components/ui'
 import { LoginScreen } from './features/auth/LoginScreen'
+import { SetPasswordScreen } from './features/auth/SetPasswordScreen'
 import { HomeScreen } from './features/home/HomeScreen'
 import { MoreScreen } from './features/more/MoreScreen'
 import { AppShell } from './layout/AppShell'
@@ -49,6 +50,7 @@ const routes: { path: string; Component: ComponentType }[] = [
 export default function App() {
   const status = useAuth((s) => s.status)
   const init = useAuth((s) => s.init)
+  const recovering = useAuth((s) => s.recovering)
   const locate = useLocation((s) => s.locate)
 
   useEffect(() => init(), [init])
@@ -64,6 +66,7 @@ export default function App() {
 
   if (status === 'loading') return <Spinner label="Loading…" />
   if (status === 'signedOut') return <LoginScreen />
+  if (recovering) return <SetPasswordScreen />
 
   return (
     <BrowserRouter>
