@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'logo.png', 'fonts/*.otf'],
+      includeAssets: ['favicon.png', 'icons/apple-touch-icon.png', 'logo.png', 'fonts/*.otf'],
       manifest: {
         name: 'Salaam Haji',
         short_name: 'Salaam Haji',
